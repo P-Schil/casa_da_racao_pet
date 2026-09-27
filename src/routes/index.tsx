@@ -1,24 +1,64 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { ArrowRight, BadgeCheck, Check, ChevronLeft, ChevronRight, Clock3, Heart, Instagram, MapPin, Menu, MessageCircle, PackageCheck, PawPrint, ShieldCheck, ShoppingBag, Sparkles, Star, Truck, X } from "lucide-react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
+const WA = "https://wa.me/5566999147354";
+const IG = "https://www.instagram.com/casa_da_racao_pet/";
+const address = "Av. Mal. Cândido Rondon, 1154 - Centro, Colíder - MT, 78500-000";
+const contact = (subject: string) => WA + "?text=" + encodeURIComponent("Olá! Gostaria de saber mais sobre " + subject + " na Casa da ração Pet.");
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const services = [
+  { icon: ShoppingBag, title: "Rações", desc: "Opções para diferentes perfis e necessidades, com orientação para ajudar você a escolher o produto adequado ao seu pet." },
+  { icon: PawPrint, title: "Acessórios", desc: "Itens para rotina, conforto, passeio e bem-estar, escolhidos para facilitar o cuidado diário." },
+  { icon: PackageCheck, title: "Produtos para pets", desc: "Produtos para apoiar a rotina de cuidados, com atenção à qualidade e à experiência de compra." },
+  { icon: Truck, title: "Consulta de disponibilidade", desc: "Consulte pelo WhatsApp produtos, disponibilidade, valores e condições de atendimento." },
+  { icon: Heart, title: "Cuidado e bem-estar", desc: "Atendimento próximo para apoiar tutores nas escolhas relacionadas à rotina e ao bem-estar dos animais." },
+  { icon: MessageCircle, title: "Orientação especializada", desc: "Tire dúvidas e receba orientação sobre os produtos disponíveis antes de decidir sua compra." },
+];
+
+const values = [
+  { icon: Heart, title: "Atendimento personalizado", desc: "Atenção às necessidades de cada tutor e de seu pet." },
+  { icon: ShieldCheck, title: "Qualidade e ética", desc: "A qualidade e a responsabilidade orientam as decisões comerciais." },
+  { icon: BadgeCheck, title: "Informação clara", desc: "Comunicação objetiva para facilitar escolhas mais seguras." },
+  { icon: Clock3, title: "Conveniência local", desc: "Produtos e orientação em um só lugar, no Centro de Colíder." },
+];
+
+const quotes = [
+  { quote: "Nosso compromisso é oferecer atendimento atencioso, informação clara e respeito às necessidades de cada tutor e animal.", name: "Compromisso Casa da ração Pet", role: "Atendimento responsável" },
+  { quote: "Acreditamos que confiança se constrói com qualidade, ética profissional e relacionamento próximo com os clientes.", name: "Nossa filosofia", role: "Qualidade e relacionamento" },
+  { quote: "Cada escolha merece orientação adequada. Estamos aqui para ajudar você a consultar produtos e encontrar alternativas para seu pet.", name: "Atendimento personalizado", role: "Orientação ao tutor" },
+];
+
+const faqs = [
+  ["Como faço para consultar produtos?", "Entre em contato pelo WhatsApp. A equipe poderá informar disponibilidade, valores e opções de produtos."],
+  ["Quais produtos a Casa da ração Pet oferece?", "A Casa da ração Pet trabalha com rações, acessórios e produtos para pets. Consulte a equipe para confirmar disponibilidade e detalhes."],
+  ["Quanto custam os produtos?", "Os valores são sob consulta e podem variar conforme o produto. Solicite uma informação atualizada pelo WhatsApp."],
+  ["Onde fica a Casa da ração Pet?", "Estamos na Av. Mal. Cândido Rondon, 1154 - Centro, Colíder - MT, 78500-000."],
+];
+
+export const Route = createFileRoute("/")({ component: Index });
+
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  const [slide, setSlide] = useState(0);
+  const [menu, setMenu] = useState(false);
+  const [faq, setFaq] = useState<number | null>(0);
+  const scrollTo = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }); setMenu(false); };
+  return <main className="site-shell">
+    <div className="top-strip"><div className="container top-inner"><span><MapPin size={14}/> Colíder - MT</span><span><Clock3 size={14}/> Seg. a sex., 8h às 18h • Sáb., 8h às 12h</span><a href={WA} target="_blank" rel="noreferrer"><MessageCircle size={14}/> Fale conosco</a></div></div>
+    <header className="site-header"><div className="container nav-wrap">
+      <a className="brand" href="#inicio" aria-label="Casa da ração Pet - início"><span className="brand-mark"><PawPrint size={27}/></span><span><strong>Casa da ração Pet</strong><small>Rações, acessórios & produtos</small></span></a>
+      <button className="menu-toggle" aria-label={menu ? "Fechar menu" : "Abrir menu"} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X/> : <Menu/>}</button>
+      <nav className={menu ? "main-nav is-open" : "main-nav"} aria-label="Navegação principal"><button onClick={() => scrollTo("sobre")}>Sobre nós</button><button onClick={() => scrollTo("servicos")}>Produtos</button><button onClick={() => scrollTo("diferenciais")}>Diferenciais</button><button onClick={() => scrollTo("duvidas")}>Dúvidas</button><a className="nav-cta" href={contact("produtos e orientação")} target="_blank" rel="noreferrer"><MessageCircle size={16}/> Quero tirar dúvidas</a></nav>
+    </div></header>
+    <section className="hero" id="inicio"><div className="hero-photo" role="img" aria-label="Pet recebendo cuidado em ambiente acolhedor"/><div className="hero-shade"/><div className="container hero-content"><div className="hero-copy"><span className="eyebrow eyebrow-light"><PawPrint size={15}/> Qualidade • confiança • cuidado</span><h1>Qualidade para o seu pet. <em>Confiança para você.</em></h1><p>Rações, acessórios e produtos para pets com atendimento personalizado, orientação próxima e compromisso com qualidade e bem-estar.</p><div className="hero-actions"><a className="btn btn-orange" href={contact("produtos e atendimento")} target="_blank" rel="noreferrer">Quero falar com especialista <ArrowRight size={18}/></a><button className="btn btn-ghost" onClick={() => scrollTo("servicos")}>Conheça nossos produtos</button></div><div className="hero-note"><span><Check size={15}/> Atendimento personalizado</span><span><Check size={15}/> Foco em qualidade</span></div></div></div><div className="hero-badge"><span className="badge-icon"><Heart size={20} fill="currentColor"/></span><span><strong>Cuidado com propósito</strong><small>qualidade e relacionamento</small></span></div></section>
+    <section className="trust-bar"><div className="container trust-grid"><div><span className="trust-icon"><Heart/></span><span><strong>Atendimento próximo</strong><small>Orientação ao tutor</small></span></div><div><span className="trust-icon"><ShieldCheck/></span><span><strong>Qualidade e responsabilidade</strong><small>Ética como princípio</small></span></div><div><span className="trust-icon"><MapPin/></span><span><strong>Perto de você</strong><small>Centro de Colíder - MT</small></span></div></div></section>
+    <section className="section about-section" id="sobre"><div className="container about-grid"><div className="about-visual"><img src="https://images.pexels.com/photos/5731872/pexels-photo-5731872.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Pessoa cuidando de um cachorro em ambiente acolhedor" loading="lazy"/><div className="about-stamp"><PawPrint size={22}/><span>Casa da ração Pet<small>Cuidado que gera confiança</small></span></div></div><div className="about-copy"><span className="eyebrow"><span className="eyebrow-dot"/> Sobre nós</span><h2>Mais segurança para escolher, mais tranquilidade para cuidar.</h2><p className="lead">A Casa da ração Pet atua em Colíder - MT com foco em rações, acessórios e produtos para pets, oferecendo atendimento próximo e orientação aos tutores.</p><p>Nosso propósito é ajudar quem busca produtos confiáveis e informações claras para cuidar melhor de seus animais. Valorizamos uma experiência de compra acolhedora, objetiva e responsável.</p><p>Acreditamos que qualidade e relacionamento duradouro são fundamentais. Por isso, não abrimos mão da responsabilidade e da ética profissional por razões comerciais.</p><div className="mission-card"><span><Sparkles size={20}/></span><div><strong>Nosso compromisso</strong><p>Oferecer atendimento personalizado e informação clara, com foco na qualidade dos produtos e no bem-estar dos pets.</p></div></div><a className="text-link" href={contact("a Casa da ração Pet")} target="_blank" rel="noreferrer">Conheça nosso atendimento <ArrowRight size={17}/></a></div></div></section>
+    <section className="section services-section" id="servicos"><div className="container"><div className="section-heading"><span className="eyebrow"><span className="eyebrow-dot"/> Produtos e soluções</span><h2>Escolhas mais simples para a rotina do seu pet.</h2><p>Consulte a disponibilidade, os valores e as opções de produtos. Nossa equipe está pronta para orientar você.</p></div><div className="services-grid">{services.map(({icon: Icon,title,desc}) => <article className="service-card" key={title}><div className="service-icon"><Icon size={25}/></div><span className="service-tag">Qualidade e cuidado</span><h3>{title}</h3><p>{desc}</p><a href={contact(title.toLowerCase())} target="_blank" rel="noreferrer" className="card-link">Consultar produto <ArrowRight size={16}/></a></article>)}</div><div className="services-foot"><span><PawPrint size={19}/> Não sabe qual opção escolher? Fale com a gente.</span><a className="btn btn-green" href={contact("orientação sobre produtos")} target="_blank" rel="noreferrer">Quero tirar dúvidas <MessageCircle size={17}/></a></div></div></section>
+    <section className="section differentiators-section" id="diferenciais"><div className="container differentiators-grid"><div className="differentiators-intro"><span className="eyebrow eyebrow-light"><span className="eyebrow-dot"/> Diferenciais</span><h2>Um atendimento que valoriza o que realmente importa.</h2><p>Confiança, clareza e qualidade fazem diferença na hora de escolher produtos para o seu animal.</p><a className="btn btn-orange" href={contact("o atendimento da Casa da ração Pet")} target="_blank" rel="noreferrer">Converse com nossa equipe <ArrowRight size={18}/></a></div><div className="commitments-grid">{values.map(({icon: Icon,title,desc},i) => <article className="commitment-card" key={title}><span className="commitment-number">0{i+1}</span><div className="commitment-icon"><Icon size={23}/></div><h3>{title}</h3><p>{desc}</p></article>)}</div></div></section>
+    <section className="section proof-section"><div className="container proof-grid"><div className="proof-heading"><span className="eyebrow"><span className="eyebrow-dot"/> Nosso jeito de atender</span><h2>Relacionamento construído com atenção e transparência.</h2><p>Conheça os princípios que orientam nosso atendimento e nosso compromisso com clientes e pets.</p><div className="proof-dots" aria-label="Selecionar compromisso">{quotes.map((_,i)=><button key={i} aria-label={"Ver compromisso " + (i+1)} aria-current={slide===i} className={slide===i?"active":""} onClick={()=>setSlide(i)}/>)}</div></div><div className="quote-card"><div className="quote-stars" aria-hidden="true"><Star/><Star/><Star/><Star/><Star/></div><span className="quote-mark">“</span><blockquote>{quotes[slide].quote}</blockquote><div className="quote-person"><span className="quote-avatar"><PawPrint/></span><span><strong>{quotes[slide].name}</strong><small>{quotes[slide].role}</small></span><div className="quote-arrows"><button aria-label="Compromisso anterior" onClick={()=>setSlide((slide+quotes.length-1)%quotes.length)}><ChevronLeft/></button><button aria-label="Próximo compromisso" onClick={()=>setSlide((slide+1)%quotes.length)}><ChevronRight/></button></div></div><p className="proof-disclaimer">Este espaço apresenta compromissos da marca. Depoimentos identificados de clientes poderão ser incluídos mediante autorização.</p></div></div></section>
+    <section className="section faq-section" id="duvidas"><div className="container faq-grid"><div><span className="eyebrow"><span className="eyebrow-dot"/> Dúvidas frequentes</span><h2>Quer saber mais antes de comprar?</h2><p>Confira algumas informações ou fale diretamente com nossa equipe pelo WhatsApp.</p><a className="text-link" href={contact("mais informações")} target="_blank" rel="noreferrer">Quero tirar dúvidas <ArrowRight size={17}/></a></div><div className="faq-list">{faqs.map(([q,a],i)=><div className={faq===i?"faq-item open":"faq-item"} key={q}><button aria-expanded={faq===i} onClick={()=>setFaq(faq===i?null:i)}><span>{q}</span><span className="faq-plus">{faq===i?"−":"+"}</span></button>{faq===i&&<p>{a}</p>}</div>)}</div></div></section>
+    <section className="final-cta" id="contato"><div className="container final-inner"><div className="final-paw"><PawPrint size={32}/></div><span className="eyebrow eyebrow-light">Estamos aqui para ajudar</span><h2>Seu pet merece qualidade e você merece tranquilidade.</h2><p>Entre em contato para consultar produtos, disponibilidade, valores e receber orientação.</p><a className="btn btn-orange btn-large" href={contact("atendimento na Casa da ração Pet")} target="_blank" rel="noreferrer"><MessageCircle size={19}/> Quero falar com especialista</a><div className="final-details"><span><Clock3 size={16}/> Seg. a sex., 8h às 18h</span><span><Clock3 size={16}/> Sáb., 8h às 12h</span><span><MapPin size={16}/> Colíder - MT</span></div></div></section>
+    <footer className="site-footer"><div className="container footer-main"><div className="footer-brand"><a className="brand brand-footer" href="#inicio"><span className="brand-mark"><PawPrint size={25}/></span><span><strong>Casa da ração Pet</strong><small>Rações, acessórios & produtos</small></span></a><p>Qualidade, orientação e atendimento próximo para quem cuida dos pets.</p><a className="instagram-link" href={IG} target="_blank" rel="noreferrer">Acompanhe no Instagram <Instagram size={15}/></a></div><div className="footer-column"><h3>Navegação</h3><button onClick={()=>scrollTo("sobre")}>Sobre nós</button><button onClick={()=>scrollTo("servicos")}>Produtos</button><button onClick={()=>scrollTo("diferenciais")}>Diferenciais</button><button onClick={()=>scrollTo("duvidas")}>Dúvidas</button></div><div className="footer-column footer-contact"><h3>Fale conosco</h3><a href={WA} target="_blank" rel="noreferrer"><MessageCircle size={17}/> (66) 99914-7354</a><a href={IG} target="_blank" rel="noreferrer"><Instagram size={17}/> @casa_da_racao_pet</a><span><MapPin size={17}/>{address}</span><span><Clock3 size={17}/> Seg. a sex., 8h às 18h • Sáb., 8h às 12h</span></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} Casa da ração Pet. Todos os direitos reservados.</span><span>Feito com cuidado para pets e seus tutores.</span></div></footer>
+    <a className="whatsapp-float" href={WA} target="_blank" rel="noreferrer" aria-label="Conversar com a Casa da ração Pet pelo WhatsApp"><MessageCircle size={27}/><span>WhatsApp</span></a>
+  </main>;
 }
